@@ -3,16 +3,15 @@
 #include "Models/Employee/Employee.h"
 #include "menu/Auth/AuthManager.h"
 #include "menu/CMenu.h"
+#include "menu/MyVector.h"
 
 int main() {
-    Client clients[100];
-    Employee employees[10];
-    int clientCount = 0;
-    int employeeCount = 0;
+    
+    MyVector<Client> clients;
+    MyVector<Employee> employees;
+    employees.push_back(Employee("admin", "admin123", "Администратор"));
 
-    employees[employeeCount++] = Employee("admin", "admin123", "Администратор");
-
-    AuthManager auth(clients, clientCount, 100, employees, employeeCount, 10);
+    AuthManager auth(clients, 100, employees, 10);
     std::string currentUserLogin;
 
     CMenu mainMenu;
@@ -49,7 +48,7 @@ int main() {
                 Deposit deposit;
                 std::cin >> deposit;
 
-                for (int i = 0; i < clientCount; ++i) {
+                for (int i = 0; i < clients.getSize(); ++i) {
                     if (clients[i].getLogin() == currentUserLogin) {
                         if (clients[i].addDeposit(deposit)) {
                             std::cout << "Вклад успешно добавлен!\n";
@@ -62,7 +61,7 @@ int main() {
             }));
 
             userMenu.addItem(CMenuItem("Мой профиль", [&]() {
-                for (int i = 0; i < clientCount; ++i) {
+                for (int i = 0; i < clients.getSize(); ++i) {
                     if (clients[i].getLogin() == currentUserLogin) {
                         clients[i].displayInfo();
                         const Deposit* deposits = clients[i].getDeposits();
@@ -76,17 +75,14 @@ int main() {
 
         } else if (role == 2) { // Меню сотрудника
             userMenu.addItem(CMenuItem("Список клиентов", [&]() {
-                Client* clients = auth.getClients();
-                int count = auth.getClientCount();
-
-                if (count == 0) {
+                if (clients.getSize() == 0) {
                     std::cout << std::endl;
                     std::cout << "Список клиентов пуст.\n";
                     return;
                 }
                 std::cout << std::endl;
-                std::cout << "Список клиентов (" << count << "):\n";
-                for (int i = 0; i < count; ++i) {
+                std::cout << "Список клиентов (" << clients.getSize() << "):\n";
+                for (int i = 0; i < clients.getSize(); ++i) {
                     std::cout << i + 1 << ". " << clients[i].getLogin() << "\n";
                 }
             }));
@@ -108,28 +104,23 @@ int main() {
                 auth.sortClients();
                 std::cout << "Клиенты отсортированы по логину.\n";
 
-                Client* clients = auth.getClients();
-                int count = auth.getClientCount();
-                for (int i = 0; i < count; ++i) {
+                for (int i = 0; i < clients.getSize(); ++i) {
                     std::cout << "  " << i + 1 << ". " << clients[i].getLogin() << "\n";
                 }
             }));
 
             userMenu.addItem(CMenuItem("Просмотр вкладов", [&]() {
-                Client* clients = auth.getClients();
-                int count = auth.getClientCount();
-
-                if (count == 0) {
+                if (clients.getSize() == 0) {
                     std::cout << std::endl;
                     std::cout << "Нет клиентов для просмотра.\n";
                     return;
                 }
 
-                std::cout << "Выберите клиента (1-" << count << "): ";
+                std::cout << "Выберите клиента (1-" << clients.getSize() << "): ";
                 int choice;
                 std::cin >> choice;
 
-                if (choice < 1 || choice > count) {
+                if (choice < 1 || choice > clients.getSize()) {
                     std::cout << std::endl;
                     std::cout << "Ошибка: Неверный выбор!\n";
                     return;

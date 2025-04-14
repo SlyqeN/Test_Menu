@@ -3,20 +3,18 @@
 #include <limits>
 
 void CMenu::addItem(const CMenuItem& item) {
-    if (itemCount < MAX_MENU_ITEMS) {
-        items[itemCount] = item;
-        itemCount++;
-    } else {
-        std::cerr << "Меню переполнено!\n";
-    }
+    items.push_back(item);
 }
 
 void CMenu::run() const {
     while (true) {
-        std::cout << "\n--- Меню ---\n";
-        for (int i = 0; i < itemCount; ++i) {
-            std::cout << (i + 1) << ". " << items[i].getTitle() << "\n";
+        std::cout << "\n====== Главное меню ======\n";
+
+        int i = 1;
+        for (auto it = items.begin(); it != items.end(); ++it) {
+            std::cout << i++ << ". " << it->getTitle() << "\n";
         }
+
         std::cout << "0. Выход\nВыберите пункт: ";
 
         int choice;
@@ -25,13 +23,14 @@ void CMenu::run() const {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Ошибка ввода!\n";
+            std::cout << "Ошибка ввода! Попробуйте снова.\n";
             continue;
         }
 
         if (choice == 0) break;
-        if (choice < 1 || choice > itemCount) {
-            std::cout << "Неверный пункт!\n";
+
+        if (choice < 1 || choice > items.getSize()) {
+            std::cout << "Неверный пункт! Попробуйте снова.\n";
             continue;
         }
 

@@ -132,6 +132,40 @@ int main() {
 
         userMenu.run();
     }));
-
+    mainMenu.addItem(CMenuItem("Демонстрация вектора (весь диапазон)", []() {
+        MyVector<std::string> vec;
+    
+        std::cout << "\nДобавление строк в вектор\n";
+        vec.push_back("Один");
+        vec.push_back("Два");
+        vec.push_back("Три");
+    
+        std::cout << "Размер после добавления: " << vec.getSize() << "\n";
+    
+        std::cout << "\nИтерация по диапазону:\n";
+        for (auto it = vec.begin(); it != vec.end(); ++it) {
+            std::cout << "  * " << *it << "\n";
+        }
+    
+        std::cout << "\nУдаляем элемент с индексом 1\n";
+        vec.erase(1);
+    
+        std::cout << "После удаления:\n";
+        for (auto it = vec.begin(); it != vec.end(); ++it) {
+            std::cout << "  * " << *it << "\n";
+        }
+    
+        std::cout << "\nДобавим элементы вновь\n";
+        vec.push_back("Четыре");
+        vec.push_back("Пять");
+    
+        std::cout << "Итоговое содержимое:\n";
+        for (auto it = vec.begin(); it != vec.end(); ++it) {
+            std::cout << "  * " << *it << "\n";
+        }
+    
+        std::cout << "Общий размер: " << vec.getSize() << "\n";
+    }));
+    
     mainMenu.run();
 }

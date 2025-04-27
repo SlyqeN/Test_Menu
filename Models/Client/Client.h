@@ -3,21 +3,22 @@
 
 #include "../Person.h"
 #include "../Deposit/Deposit.h"
+#include "../../menu/MyVector.h"
+#include "../../menu/AbstractDepositContainer.h"
 
-class Client : public Person {
+class Client : public Person, public AbstractDepositContainer {
     private:
-        Deposit deposits[10];
-        int depositCount = 0;
+        MyVector<Deposit> deposits;
     
     public:
         Client() = default;
         Client(const std::string& login, const std::string& password);
         
-        bool addDeposit(const Deposit& deposit);
+        bool addDeposit(const Deposit& deposit) override;
         bool operator==(const Client& other) const;
         bool operator<(const Client& other) const;
-        const Deposit* getDeposits() const;
-        int getDepositCount() const;
+        const Deposit* getDeposits() const override;
+        int getDepositCount() const override;
         
         friend std::ostream& operator<<(std::ostream& os, const Client& client);
         friend std::istream& operator>>(std::istream& is, Client& client);

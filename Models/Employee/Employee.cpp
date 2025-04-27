@@ -22,8 +22,9 @@ void Employee::viewClientDeposits(const Client& client) const {
     }
     
     std::cout << "Вклады клиента " << client.getLogin() << ":\n";
+    const Deposit* deposits = client.getDeposits();
     for (int i = 0; i < client.getDepositCount(); ++i) {
-        std::cout << "🔹 " << client.getDeposits()[i] << "\n";
+        std::cout << "🔹 " << deposits[i] << "\n";
     }
 }
 

@@ -3,90 +3,45 @@
 
 #include <iostream>
 
-template <typename T>
+template <class T>
 class MyVector {
-private:
-    T* arr;          
-    int size;        
-    int capacity;    
-
-   
-    void resize(int newCapacity) {
-        T* temp = new T[newCapacity];
-        for (int i = 0; i < size; ++i) {
-            temp[i] = arr[i];
-        }
+    T* arr;
+    int sz;
+    int cap;
+    void resize(int newCap) {
+        T* tmp = new T[newCap];
+        for (int i = 0; i < sz; ++i)
+            tmp[i] = arr[i];
         delete[] arr;
-        arr = temp;
-        capacity = newCapacity;
+        arr = tmp;
+        cap = newCap;
     }
-
 public:
-   
-    MyVector() {
-        arr = nullptr;
-        size = 0;
-        capacity = 0;
+    MyVector() : arr(nullptr), sz(0), cap(0) {}
+    MyVector(int n, const T& val = T()) : sz(n), cap(n) {
+        arr = new T[cap];
+        for (int i = 0; i < sz; ++i) arr[i] = val;
     }
-
-    
-    MyVector(int n, const T& value = T()) {
-        size = n;
-        capacity = n;
-        arr = new T[capacity];
-        for (int i = 0; i < size; ++i) {
-            arr[i] = value;
-        }
+    ~MyVector() { delete[] arr; }
+    void push_back(const T& val) {
+        if (sz >= cap) resize(cap == 0 ? 1 : cap * 2);
+        arr[sz++] = val;
     }
-
-    
-    ~MyVector() {
-        delete[] arr;
-    }
-
-    
-    void push_back(const T& value) {
-        if (size >= capacity) {
-            int newCapacity = (capacity == 0) ? 1 : capacity * 2;
-            resize(newCapacity);
-        }
-        arr[size] = value;
-        ++size;
-    }
-
-    
-    void erase(int index) {
-        if (index < 0 || index >= size) return;
-        for (int i = index; i < size - 1; ++i) {
+    void erase(int idx) {
+        if (idx < 0 || idx >= sz) return;
+        for (int i = idx; i < sz - 1; ++i)
             arr[i] = arr[i + 1];
-        }
-        --size;
+        --sz;
     }
-
-    
-    int getSize() const {
-        return size;
-    }
-
-    
-    T& operator[](int index) {
-        return arr[index];
-    }
-
-    const T& operator[](int index) const {
-        return arr[index];
-    }
-
-    
+    int getSize() const { return sz; }
+    T& operator[](int idx) { return arr[idx]; }
+    const T& operator[](int idx) const { return arr[idx]; }
     T* begin() { return arr; }
-    T* end() { return arr + size; }
+    T* end() { return arr + sz; }
     const T* begin() const { return arr; }
-    const T* end() const { return arr + size; }
-
-    
-    T* data() {
-        return arr;
-    }
+    const T* end() const { return arr + sz; }
+    T* data() { return arr; }
+    const T* data() const { return arr; }
 };
 
-#endif 
+#endif // MYVECTOR_H 

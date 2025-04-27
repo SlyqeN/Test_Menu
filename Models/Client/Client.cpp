@@ -1,5 +1,4 @@
 #include "Client.h"
-
 #include <iostream>
 
 Client::Client(const std::string& login, const std::string& password) {
@@ -8,8 +7,8 @@ Client::Client(const std::string& login, const std::string& password) {
 }
 
 bool Client::addDeposit(const Deposit& deposit) {
-    if (depositCount < 10) {
-        deposits[depositCount++] = deposit;
+    if (deposits.getSize() < 10) {
+        deposits.push_back(deposit);
         return true;
     }
     return false;
@@ -23,16 +22,16 @@ bool Client::operator<(const Client& other) const {
     return login < other.login;
 }
 
-const Deposit* Client::getDeposits() const { 
-    return deposits; 
+const Deposit* Client::getDeposits() const {
+    return deposits.data();
 }
 
-int Client::getDepositCount() const { 
-    return depositCount; 
+int Client::getDepositCount() const {
+    return deposits.getSize();
 }
 
 std::ostream& operator<<(std::ostream& os, const Client& client) {
-    os << "Клиент: " << client.login << "\nВклады: " << client.depositCount;
+    os << "Клиент: " << client.login << "\nВклады: " << client.deposits.getSize();
     return os;
 }
 

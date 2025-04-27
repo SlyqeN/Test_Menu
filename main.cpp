@@ -143,16 +143,16 @@ int main() {
         std::cout << "Размер после добавления: " << vec.getSize() << "\n";
     
         std::cout << "\nИтерация по диапазону:\n";
-        for (auto it = vec.begin(); it != vec.end(); ++it) {
-            std::cout << "  * " << *it << "\n";
+        for (auto it:vec) {
+            std::cout << "  * " << it << "\n";
         }
     
         std::cout << "\nУдаляем элемент с индексом 1\n";
         vec.erase(1);
     
         std::cout << "После удаления:\n";
-        for (auto it = vec.begin(); it != vec.end(); ++it) {
-            std::cout << "  * " << *it << "\n";
+        for (auto it:vec) {
+            std::cout << "  * " << it << "\n";
         }
     
         std::cout << "\nДобавим элементы вновь\n";
@@ -160,8 +160,8 @@ int main() {
         vec.push_back("Пять");
     
         std::cout << "Итоговое содержимое:\n";
-        for (auto it = vec.begin(); it != vec.end(); ++it) {
-            std::cout << "  * " << *it << "\n";
+        for (auto it:vec) {
+            std::cout << "  * " << it << "\n";
         }
     
         std::cout << "Общий размер: " << vec.getSize() << "\n";

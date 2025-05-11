@@ -2,6 +2,8 @@
 #define MYVECTOR_H
 
 #include <iostream>
+#include <exception>
+#include "MyException.h"
 
 template <class T>
 class MyVector {
@@ -34,8 +36,8 @@ public:
         --sz;
     }
     int getSize() const { return sz; }
-    T& operator[](int idx) { return arr[idx]; }
-    const T& operator[](int idx) const { return arr[idx]; }
+    T& operator[](int idx) { if(idx<0||idx>=sz) throw MyException("Индекс вне диапазона"); return arr[idx]; }
+    const T& operator[](int idx) const { if(idx<0||idx>=sz) throw MyException("Индекс вне диапазона"); return arr[idx]; }
     T* begin() { return arr; }
     T* end() { return arr + sz; }
     const T* begin() const { return arr; }

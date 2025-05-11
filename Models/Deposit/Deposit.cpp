@@ -1,5 +1,7 @@
 #include "Deposit.h"
 #include <iostream>
+#include <exception>
+#include "../../menu/MyException.h"
 
 
 Deposit::Deposit(const std::string& name, double amount, double rate) 
@@ -17,8 +19,10 @@ std::istream& operator>>(std::istream& is, Deposit& dep) {
     is >> dep.name;
     std::cout << "Сумма: ";
     is >> dep.amount;
+    if(is.fail() || dep.amount < 0) throw MyException("Сумма должна быть положительной!");
     std::cout << "Процентная ставка (%): ";
     is >> dep.interestRate;
+    if(is.fail() || dep.interestRate < 0 || dep.interestRate > 100) throw MyException("Процент некорректен!");
     return is;
 }
 
